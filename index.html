@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    
+    <title>YUI dependency management</title>
+    <script type="text/javascript" src="js/App.js"></script>
+    
+</head>
+<body>
+    
+    <div id="content">
+        <h3>Awesome YUI dependency management</h3>
+        <p><a href="www.7shifts.com/blog/yui-loader-managing-custom-javascript-css-dependencies">www.7shifts.com/blog/yui-loader-managing-custom-javascript-css-dependencies</a></p>
+        
+        <p>Oh hai! Let's add something to the queue! Pop open firebug</p>
+        
+        <script type="text/javascript">
+            // Calling the App.Availability module will produce the following two HTTP requests:
+            // min-css?f=css/vendors/jquery.tooltip.css
+            // min-js?f=js/vendors/highcharts.js,js/vendors/jquery.tooltip.min.js,js/App.Availability.js
+            App.Scripts.queue('App.Availability', function(){
+                // This won't actually do anything cause we don't have a combo/minifier setup
+                // on min-js and min-css
+            });
+        </script>
+        
+    </div>
+    <!-- end content (this is probably your included main content) -->
+    
+    
+    <!-- SCRIPTS <3 BOTTOM -->
+    <script type="text/javascript" src="js/App.Modules.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js&3.1.1/build/loader/loader-min.js"></script>
+    <script type="text/javascript">
+
+        App.Loader = YUI({
+            charset: 'utf-8',
+            timeout: 10000,
+            combine: true,
+            filter: {
+                'searchExp': "&",
+                'replaceStr': ","
+            },
+            groups: {
+                css: {
+                    root: 'css/',
+                    modules: App.Modules.css,
+                    combine: true,
+                    comboBase: '/min-css?f='
+                },
+                js: {
+                    root: 'js/',
+                    modules: App.Modules.js,
+                    combine: true,
+                    comboBase: '/min-js?f='
+                }
+            }
+        });
+
+        // Fetch all the scripts from a queue
+        var scripts = App.Scripts.fetch();
+        if(scripts){
+            for(var i = 0, l = scripts.length; i < l; i++){
+                App.Loader.use.apply(App.Loader, scripts[i]);
+            }
+        }
+
+    </script> 
+</body>
+</html>
