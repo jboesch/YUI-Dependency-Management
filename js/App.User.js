@@ -1,0 +1,3 @@
+App.User = (function(){
+    return {};
+})();

@@ -1,0 +1,3 @@
+App.Availability = (function(){
+    return {};
+})();
