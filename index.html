@@ -59,7 +59,7 @@
 
         // Fetch all the scripts from a queue
         var scripts = App.Scripts.fetch();
-        if(scripts){
+        if(scripts.length){
             for(var i = 0, l = scripts.length; i < l; i++){
                 App.Loader.use.apply(App.Loader, scripts[i]);
             }
